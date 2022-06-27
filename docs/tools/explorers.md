@@ -28,7 +28,7 @@ Below is a list of public block explorers that support Haqq Mainnet and Testnet:
 
 |                      | Category | URL                    |
 | -------------------- | -------- | ---------------------- |
-| Blockscout  | `In progress...`    | In progress...                       |
+| Blockscout  | `haqq`    | [explorer.testedge.haqq.network](https://explorer.testedge.haqq.network/)                       |
 
 :::
 ::::
