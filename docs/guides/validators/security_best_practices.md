@@ -330,7 +330,7 @@ Once the installation is complete, you can save your configuration using the com
 sudo invoke-rc.d iptables-persistent save
 ```
 
-### One command firewall configuration
+### Simple firewall configuration for **validator**
 
 After executing this command, we will create rules with allowed ports `22` and `26656`, the rest of the ports will be denied on `INPUT` chain:
 
