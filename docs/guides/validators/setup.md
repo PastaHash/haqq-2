@@ -8,8 +8,13 @@ Learn how to setup and run a validator node {synopsis}
 
 ## Pre-requisite Readings
 
-- [Validator Overview](./overview.md) {prereq}
-- [Full Node Setup](../localnet/single_node.md#manual-localnet) {prereq}
+::: tip
+
+Pre-requisite Readings
+1) [Validator Overview](./overview.md)
+1) [Full Node Setup](../localnet/single_node.md#manual-localnet)
+
+:::
 
 If you plan to use a Key Management System (KMS), you should go through these steps first: [Using a KMS](./../kms/kms.md).
 
@@ -40,11 +45,31 @@ As the usage of the blockchain grows, the server requirements may increase as we
 
 ## Create Your Validator
 
-Your `haqqvalconspub` can be used to create a new validator by staking tokens. You can find your validator pubkey by running:
+::: danger
 
-```bash
-haqqd tendermint show-validator
-```
+**Before validator creation checklist 📋**
+
+Before you started please make sure that you have been already done this steps for successful validator creation:
+
+1) Init [node](./../../testnet/join_full.md#initialize-node)
+
+1) Create [keys](./../../testnet/join_full.md#create-keys)
+
+1) Configure [chain-id](./../../testnet/join_full.md#save-chain-id)
+
+1) Added some ISLM to your [account](./../../testnet/join_full.md#adding-some-islm-to-your-account)
+
+1) Deligated some ISLM to your [validator](./../../testnet/join_full.md#the-next-step-is-delegation-islm-to-your-validator)
+
+1) Familiarize yourself with the best practices for node [security](./../validators/security_best_practices.md)
+
+:::
+
+## Additional information
+
+You can found additional about joining TestEdge [here](./../../testnet/join_full.md)
+
+## Create validator
 
 To create your validator, just use the following command:
 
@@ -60,11 +85,14 @@ haqqd tx staking create-validator \
   --min-self-delegation="1000000" \
   --gas="auto" \
   --gas-prices="0.025aISLM" \
-  --from=<key_name>
+  --from=<key_name> \
+  --node https://rpc.tm.testedge.haqq.network:443
 ```
 
 ::: tip
+
 When specifying commission parameters, the `commission-max-change-rate` is used to measure % *point* change over the `commission-rate`. E.g. 1% to 2% is a 100% rate increase, but only 1 percentage point.
+
 :::
 
 ::: tip
@@ -73,7 +101,7 @@ When specifying commission parameters, the `commission-max-change-rate` is used 
 
 You can confirm that you are in the validator set by using a third party explorer.
 
-## Participate in Genesis as a Validator
+<!-- ## Participate in Genesis as a Validator
 
 If you want to participate in genesis as a validator, you need to justify that
 you have some stake at genesis, create one (or multiple) transactions to bond this stake to your validator address, and include this transaction in the genesis file.
@@ -98,10 +126,12 @@ haqqd gentx \
   --commission-max-change-rate <commission_max_change_rate> \
   --pubkey <consensus_pubkey> \
   --name <key_name>
-```
+``` -->
 
 ::: tip
+
 When specifying commission parameters, the `commission-max-change-rate` is used to measure % _point_ change over the `commission-rate`. E.g. 1% to 2% is a 100% rate increase, but only 1 percentage point.
+
 :::
 
 You can then submit your `gentx` on the [launch repository](https://github.com/cosmos/launch). These `gentx` will be used to form the final genesis file. 
@@ -139,7 +169,7 @@ __Note__: The `commission-rate` value must adhere to the following invariants:
 View the validator's information with this command:
 
 ```bash
-haqqd query staking validator <account_cosmos>
+haqqd query staking validator <account_validator>
 ```
 
 ## Track Validator Signing Information
@@ -228,3 +258,40 @@ LimitNOFILE=4096
 [Install]
 WantedBy=multi-user.target
 ```
+
+### Problem #3: My node crashes because of `validator set is nil in genesis and still empty after InitChain`
+
+Make sure you have a genesis file in `$HOME/.haqqd/config/genesis.json` if you don't have this file you can find it here
+
+```sh
+curl -OL https://storage.googleapis.com/haqq-testedge-snapshots/genesis.json
+```
+
+And also you can validate genesis file using this command
+
+```sh
+haqqd validate-genesis
+```
+
+### Problem #4: I have an error while running validator `wrong Block.Header.AppHash.`
+
+First of all, you should make sure that your bin file is up to date
+
+```sh
+haqqd -v
+# haqqd version "1.0.3" 58215364d5be4c9ab2b17b2a80cf89f10f6de38a
+```
+
+We are currently using version `1.0.3` on TestEdge.
+
+This error can also occur if you run the validator from a period when blocks were produced on a different version of the binary. 
+
+From this point, we recommend starting the node using snapshot or statesync. More information you can find [here](./../../testnet/join_full.md)
+
+### Unknown problems
+
+If you encounter bugs that are not covered in our documentation portal, we'd love to see your bug report on our [discord](https://discord.gg/aZMm8pekhZ)
+
+## Validator FAQ
+
+If you have any problems with validator setting up you can visit our [Validator FAQ](./faq.md) page.

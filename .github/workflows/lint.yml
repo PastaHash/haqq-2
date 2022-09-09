@@ -6,7 +6,7 @@ on:
   pull_request:
   push:
     branches:
-      - main
+      - master
 jobs:
   golangci:
     name: Run golangci-lint
@@ -29,5 +29,3 @@ jobs:
           version: latest
           args: --timeout 10m
           github-token: ${{ secrets.github_token }}
-        # Check only if there are differences in the source code
-        if: "env.GIT_DIFF"
